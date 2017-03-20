@@ -1,0 +1,45 @@
+package ${package}entity;
+
+import java.io.Serializable;
+#if(${table.hasBigDecimal})
+import java.math.BigDecimal;
+#end
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import javax.persistence.Index;
+import javax.persistence.UniqueConstraint;
+
+/**
+ * <b>说明：</b>${table.tableComment}<br>
+ * @author ${author}
+ * @email ${email}
+ * @createTime ${createTime}
+ */
+@Entity
+${table.getAnnotation()}
+public class ${table.className}Entity implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+#foreach ($column in $table.columns)
+	/**
+	 * <b>说明：</b>${column.columnComment}<br>
+	 */
+	${column.getAnnotation()}
+	private $column.dataType.getJavaType() $column.fieldName;
+	
+#end
+#foreach ($column in $table.columns)
+	public void set${column.methodName}($column.dataType.getJavaType() $column.fieldName) {
+		this.$column.fieldName = $column.fieldName;
+	}
+	
+	public $column.dataType.getJavaType() get${column.methodName}() {
+		return $column.fieldName;
+	}
+	
+#end
+}

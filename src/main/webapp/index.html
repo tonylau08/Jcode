@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Jcode</title>
+</head>
+<body>
+	<ui id="table_list">
+		welcome
+	</ui>
+</body>
+
+<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+getAllTables();
+
+function getAllTables(){
+	var param = {"tableSchema": "test"};
+	var url = "getAllTables.do;";
+   	$.ajax({
+   		url: url,
+		dataType:"json",
+		type: "post",
+		data: param,
+		success:function(data){
+			alert("----------------2");
+			for(var i=0; i<data.length; i++){
+				var table = data[i];
+				var model_table_list = $("#model_table_list").text();
+				model_table_list = model_table_list.replace("DATA_TABLE_NAME", table.tableName)
+								.replace("DATA_TABLE_SCHEMA", table.tableSchema)
+								.replace("DATA_TABLE_COMMENT", table.tableComment);
+				$("#table_list").append(model_table_list);
+			}
+		}
+	})
+}
+</script>
+
+<script type="template" id="model_table_list">
+<li>
+	<div class="class-table-list">
+		<span>DATA_TABLE_NAME</span><span>DATA_TABLE_SCHEMA</span><span>DATA_TABLE_COMMENT</span>
+	</div>
+</li>
+</script>
+</html>
